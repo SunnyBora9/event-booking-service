@@ -15,5 +15,3 @@ public class EventUtil<T> {
        return normalizedName + "_" + System.currentTimeMillis();
     }
 }
-
-
