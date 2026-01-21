@@ -1,16 +1,17 @@
 package com.company.eventbooking.entity;
 
+import com.company.eventbooking.util.EncryptedStringConverter;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @Entity
 @Table(name="users")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
 
     @Id
@@ -19,8 +20,15 @@ public class User {
 
     private String name;
 
-    @Column(unique=true, nullable=false)
+    @Convert(converter= EncryptedStringConverter.class)
+    @Column(unique = true, nullable=false)
     private String email;
+
+    @Column(nullable=false)
+    private String password;
+
+    @Builder.Default
+    private String role="USERS";
 
 
 }

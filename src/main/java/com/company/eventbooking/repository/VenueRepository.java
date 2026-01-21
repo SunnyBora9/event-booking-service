@@ -1,14 +1,17 @@
 package com.company.eventbooking.repository;
 
-import com.company.eventbooking.dto.VenueRequest;
-import com.company.eventbooking.dto.VenueResponse;
-import com.company.eventbooking.model.Venue;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
+import com.company.eventbooking.entity.Venue;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+public interface VenueRepository extends JpaRepository<Venue,Long> {
 
-@Repository
+}
+
+
+
+
+
+/*
 public class VenueRepository {
     private final JdbcTemplate jdbcTemplate;
 
@@ -42,3 +45,8 @@ public class VenueRepository {
         return jdbcTemplate.update(sql,id);
     }
 }
+
+ */
+
+
+
