@@ -22,13 +22,16 @@ public class VenueController {
     private VenueService venueService;
 
     @PostMapping
-    public ResponseEntity<Void> createVenue(@RequestBody VenueRequest venueRequest) {
-        log.info("Received request to create venue: {}",venueRequest.name());
+    public ResponseEntity<String> createVenue(@RequestBody VenueRequest venueRequest) {
+        log.info("Creating venue: {}", venueRequest.name());
 
+        try{
         venueService.createVenue(venueRequest);
-        log.info("Venue created successfully: {}",venueRequest.name());
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Venue is created successfully");
+        } catch(Exception exception){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getLocalizedMessage());
+        }
     }
 
     @GetMapping
@@ -42,23 +45,30 @@ public class VenueController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateVenue(@PathVariable Long id, @RequestBody VenueRequest venue) {
-        log.info("Received request to update venue: {}",venue.name());
+    public ResponseEntity<String> updateVenue(@PathVariable Long id, @RequestBody VenueRequest venue) {
+        log.info("Received request to update venue: {}", venue.name());
 
-        venueService.updateVenue(id, venue);
-        log.info("Venue updated successfully: {}",venue.name());
+        try{
+            venueService.updateVenue(id, venue);
+            log.info("Venue {} updated successfully", venue.name());
+            return ResponseEntity.ok("Venue is updated successfully");
+        } catch (Exception e){
+            return ResponseEntity.ok(e.getLocalizedMessage());
 
-        return ResponseEntity.ok().build();
+        }
+
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteVenue(@PathVariable Long id) {
-        log.info("Received request to delete event: {}",id.toString());
-
-        venueService.deleteVenue(id);
-        log.info("Venue deleted successfully: {}",id.toString());
-
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteVenue(@PathVariable Long id) {
+        log.info("Request to delete venue: {}", id);
+        try {
+            venueService.deleteVenue(id);
+            log.info("Venue {} deleted successfully", id);
+            return ResponseEntity.ok("Venue is deleted successfully");
+        } catch(Exception exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getLocalizedMessage());
+        }
     }
 
 }

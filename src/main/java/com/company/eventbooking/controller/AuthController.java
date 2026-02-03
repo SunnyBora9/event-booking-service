@@ -3,7 +3,6 @@ package com.company.eventbooking.controller;
 import com.company.eventbooking.dto.AuthResponse;
 import com.company.eventbooking.dto.LoginRequest;
 import com.company.eventbooking.dto.RegisterRequest;
-import com.company.eventbooking.entity.User;
 import com.company.eventbooking.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

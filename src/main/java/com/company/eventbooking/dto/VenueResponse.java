@@ -1,3 +1,9 @@
 package com.company.eventbooking.dto;
 
-public record VenueResponse(Long id,String name,String city,Integer capacity) {}
+import java.util.List;
+
+public record VenueResponse( Long venueId,
+                             String venueName,
+                             String city,
+                             Integer capacity,
+                             List<EventSummaryResponse> events) {}

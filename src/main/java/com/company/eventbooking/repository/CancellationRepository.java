@@ -12,4 +12,7 @@ import java.util.Optional;
 @Repository
 public interface CancellationRepository extends JpaRepository<CancellationRequest,Long> {
 
+    boolean existsByBookingId(Long bookingId);
+    Optional<CancellationRequest> findByBookingId(Long bookingId);
+
 }

@@ -26,8 +26,7 @@ public class Event {
     @Column(name="event_date", nullable = false)
     private LocalDateTime eventDate;
 
-    @ManyToOne
-    @JoinColumn(name = "venue_id")
+    @ManyToOne(fetch=FetchType.LAZY)
     private Venue venue;
 
 }

@@ -1,6 +1,7 @@
 package com.company.eventbooking.repository;
 
 import com.company.eventbooking.entity.Booking;
+import com.company.eventbooking.entity.BookingSeat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +12,5 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
     List<Booking> findByUserEmail(String userEmail);
     List<Booking> findByEventId(Long eventId);
     boolean existsByBookingCode(String bookingCode);
+
 }

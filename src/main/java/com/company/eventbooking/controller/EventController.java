@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @SecurityRequirement(name="bearerAuth")
 @RestController
@@ -33,10 +34,10 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EventResponse>> listEvents(){
+    public ResponseEntity<Map<String,List<EventResponse>>> listEvents(){
         log.info("Received request to fetch all events");
 
-        List<EventResponse> events=eventService.listEvents();
+        Map<String,List<EventResponse>> events=eventService.listEvents();
         log.info("All events fetched successfully: {}",events.size());
 
         return ResponseEntity.ok(events);

@@ -24,8 +24,8 @@ public class RefundController {
     @PostMapping("/{bookingId}")
     public ResponseEntity<String> refund(@PathVariable Long bookingId){
         try {
-            refundService.initiateRefund(bookingId);
-            return ResponseEntity.ok("Refund initiated successfully");
+            String refunded=refundService.initiateRefund(bookingId);
+            return ResponseEntity.ok("Refund initiated successfully"+"\n"+refunded);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getLocalizedMessage());
         }

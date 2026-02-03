@@ -15,16 +15,22 @@ import java.util.UUID;
 public class RequestMdcFilter extends OncePerRequestFilter {
 
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        try{
+        try {
+            // Generate a request-specific ID (Correlation ID)
             MDC.put("requestId", UUID.randomUUID().toString());
-            MDC.put("path",request.getRequestURI());
 
-            filterChain.doFilter(request,response);
+            // Get or create a session to retrieve the Session ID
+            // true forces the creation of a session if one doesn't exist
+            String sessionId = request.getSession(true).getId();
+
+            // Put the Session ID into the MDC 'user' key for your log pattern [%X{user}]
+            MDC.put("user", sessionId);
+
+            MDC.put("path", request.getRequestURI());
+
+            filterChain.doFilter(request, response);
         } finally {
             MDC.clear();
         }

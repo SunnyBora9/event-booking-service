@@ -32,6 +32,9 @@ public class Booking {
     @Column(nullable = false)
     private double discountAmount;
 
+    @Column(unique = true)
+    private String idempotencyKey;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false,length=20)
     private BookingStatus status;

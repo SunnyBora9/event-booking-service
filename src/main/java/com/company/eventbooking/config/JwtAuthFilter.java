@@ -12,8 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,6 +26,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @NoArgsConstructor
+@EnableMethodSecurity
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -42,10 +45,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             User user=userRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found"));
 
             if(user !=null){
-                MDC.put("user",user.getEmail());
-                log.info("User : {}",MDC.get("user"));
-                UsernamePasswordAuthenticationToken auth=new UsernamePasswordAuthenticationToken(email,null, List.of(new SimpleGrantedAuthority("ROLE" + user.getRole()))
+                UsernamePasswordAuthenticationToken auth=new UsernamePasswordAuthenticationToken(email,null, List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
                 );
+                MDC.put("authenticatedUser", user.getEmail());
+                MDC.put("userRole", user.getRole());
+                log.info("User : {}", user.getEmail());
+                log.info("UserRole : {}", user.getRole());
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }

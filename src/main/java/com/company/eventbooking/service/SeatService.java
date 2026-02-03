@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,11 +27,30 @@ public class SeatService {
      @Autowired
     private BookingSeatRepository bookingSeatRepository;
 
-     public List<SeatAvailabilityResponse> getSeatAvailability(Long eventId){
-         Event event=eventRepository.findById(eventId).orElseThrow(()-> new IllegalArgumentException("Event not found"));
+    public List<SeatAvailabilityResponse> getSeatAvailabilityByName(String eventName) {
+        // 1. Find event by name
+        Event event = eventRepository.findByNameIgnoreCase(eventName)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found: " + eventName));
 
-         List<Seat> seats=seatRepository.findByVenueId(event.getVenue().getId());
+        // 2. Get all seats for the venue
+        List<Seat> allSeats = seatRepository.findByVenueId(event.getVenue().getId());
 
-         return seats.stream().map(seat->new SeatAvailabilityResponse(seat.getId(),seat.getSeatNo(),seat.getSeatCategory().name(),!bookingSeatRepository.existsByEventIdAndSeatId(eventId,seat.getId()))).toList();
-     }
+        // 3. FIX: Ensure you are filtering by the specific Event ID in the repository query
+        // Also, added a null check and strict Long mapping
+        Set<Long> bookedSeatIds = bookingSeatRepository.findAllByEventId(event.getId())
+                .stream()
+                .filter(bs -> bs.getSeat() != null)
+                .map(bs -> bs.getSeat().getId())
+                .collect(Collectors.toSet());
+
+        // 4. Map to response
+        return allSeats.stream()
+                .map(seat -> new SeatAvailabilityResponse(
+                        seat.getId(),
+                        seat.getSeatNo(),
+                        seat.getSeatCategory().name(),
+                        !bookedSeatIds.contains(seat.getId())
+                ))
+                .toList();
+    }
 }

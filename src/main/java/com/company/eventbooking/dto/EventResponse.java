@@ -1,11 +1,19 @@
 package com.company.eventbooking.dto;
 
-import java.time.LocalDateTime;
 
+import java.time.LocalDateTime;
+import java.util.List;
 public record EventResponse(
-        Long id,
+        Long eventId,
         String eventCode,
-        String name,
-        LocalDateTime eventDate,
-        Long venueId
-) {}
+        String eventName,
+        LocalDateTime date,
+        Long venueId,
+        List<SeatResponse> availableSeats
+) {
+    public record SeatResponse(
+            Long eventId,
+            String seatNo,
+            String category
+    ) {}
+}

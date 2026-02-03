@@ -4,11 +4,13 @@ import com.company.eventbooking.config.JwtUtil;
 import com.company.eventbooking.dto.AuthResponse;
 import com.company.eventbooking.dto.LoginRequest;
 import com.company.eventbooking.dto.RegisterRequest;
+import com.company.eventbooking.entity.Admin;
 import com.company.eventbooking.entity.User;
 import com.company.eventbooking.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,8 @@ public class AuthService {
         }
         User user=User.builder()
                 .email(request.email())
-                .password(passwordEncoder.encode(request.password())).build();
+                .password(passwordEncoder.encode(request.password()))
+                .build();
 
         userRepository.save(user);
 
