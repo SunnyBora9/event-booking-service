@@ -1,0 +1,14 @@
+Event,TotalSeats,BookedSeats,OccupancyPercentage
+Art Exhibition,1,0,0.0
+Book fair,0,0,0.0
+Comedy Night,0,0,0.0
+Concert_indie_music,11,0,0.0
+Concert_rap,11,0,0.0
+Concert_rap_music,11,1,9.09
+Food Festival,6,6,100.0
+Mall event,11,2,18.18
+Music Concert,11,6,54.55
+nick jonas event,11,6,54.55
+StartUp Meetup,6,0,0.0
+sunidhi_chauhan_event,11,12,109.09
+Tech Conference,6,0,0.0
